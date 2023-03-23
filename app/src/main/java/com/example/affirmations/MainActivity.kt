@@ -15,9 +15,7 @@
  */
 package com.example.affirmations
 
-import android.content.Context
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -59,78 +57,8 @@ fun AffirmationCard(affirmation: Affirmation) {
         AsyncImage(
             model = affirmation.imageUrl,
             contentDescription = affirmation.text,
-        placeholder = painterResource(id = R.drawable.image1))
+            placeholder = painterResource(id = R.drawable.image1)
+        )
         Text(text = affirmation.text)
     }
 }
-
-//@Composable
-//fun AffirmationCard(affirmationResources: Affirmation) {
-//    val context = LocalContext.current
-//    Column {
-//        Button(onClick = {
-//            Toast.makeText(context, "button clicked", Toast.LENGTH_SHORT).show()
-//        }, Modifier.height(Dp(100f))) {
-//
-//        }
-//        Image(
-//            painter = painterResource(affirmationResources.imageResourceId),
-//            contentDescription = affirmationResources.text,
-//            contentScale = ContentScale.Crop,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(194.dp)
-//                .clickable {
-//                    showToast(context, affirmationResources)
-//                }
-//        )
-//        Text(
-//            text = affirmationResources.text,
-//            modifier = Modifier
-//                .padding(16.dp)
-//                .clickable {
-//                    showToast(context, affirmationResources)
-//                },
-//            style = MaterialTheme.typography.h6
-//        )
-//    }
-//    Row(modifier = Modifier.horizontalScroll(ScrollState(1))) {
-//        Image(
-//            painter = painterResource(affirmationResources.imageResourceId),
-//            contentDescription = affirmationResources.text,
-//            modifier = Modifier
-//                .height(194.dp)
-//                .clickable {
-//                    showToast(context, affirmationResources)
-//                },
-//            contentScale = ContentScale.Crop
-//        )
-//        Text(
-//            text = affirmationResources.text,
-//            modifier = Modifier
-//                .padding(16.dp)
-//                .clickable {
-//                    showToast(context, affirmationResources)
-//                },
-//            style = MaterialTheme.typography.h6
-//        )
-//    }
-//
-//
-//}
-
-
-private fun showToast(
-    context: Context,
-    affirmation: Affirmation
-) {
-    Toast
-        .makeText(context, "${affirmation.text}", Toast.LENGTH_SHORT)
-        .show()
-}
-
-//@Preview
-//@Composable
-//private fun AffirmationCardPreview() {
-//    AffirmationCard(Affirmation("R.string.affirmation1"))
-//}

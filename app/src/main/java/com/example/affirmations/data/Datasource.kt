@@ -15,36 +15,14 @@
  */
 package com.example.affirmations.data
 
-import com.example.affirmations.R
 import com.example.affirmations.model.Affirmation
 import com.example.affirmations.model.AffirmationResources
-import com.google.gson.annotations.SerializedName
-import okhttp3.OkHttpClient
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
 
 
 /**
  * [Datasource] generates a list of [AffirmationResources]
  */
-class Datasource() {
-    fun loadAffirmations(): List<AffirmationResources> {
-        return listOf<AffirmationResources>(
-            AffirmationResources(R.string.affirmation1, R.drawable.image1),
-            AffirmationResources(R.string.affirmation2, R.drawable.image2),
-            AffirmationResources(R.string.affirmation3, R.drawable.image3),
-            AffirmationResources(R.string.affirmation4, R.drawable.image4),
-            AffirmationResources(R.string.affirmation5, R.drawable.image5),
-            AffirmationResources(R.string.affirmation6, R.drawable.image6),
-            AffirmationResources(R.string.affirmation7, R.drawable.image7),
-            AffirmationResources(R.string.affirmation8, R.drawable.image8),
-            AffirmationResources(R.string.affirmation9, R.drawable.image9),
-            AffirmationResources(R.string.affirmation10, R.drawable.image10)
-        )
-    }
-
+class Datasource {
     suspend fun loadAffirmation(): List<Affirmation> {
         return RetrofitHelper.getInstance().create(NewsApiService::class.java).loadNews().run {
             this.body()?.articles?.map {
@@ -53,34 +31,4 @@ class Datasource() {
         }
     }
 }
-
-interface NewsApiService {
-    @GET("/v2/everything?q=tesla&from=2023-02-22&sortBy=publishedAt&apiKey=dfa28781f7eb46f8b33fdd642153b51c")
-    suspend fun loadNews(): Response<NewsResponse>
-}
-
-object RetrofitHelper {
-
-    val baseUrl = "https://newsapi.org/"
-
-    fun getInstance(): Retrofit {
-        return Retrofit.Builder().baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-}
-
-data class NewsResponse(
-    @SerializedName("articles")
-    val articles: List<Articles>
-)
-
-data class Articles(
-    @SerializedName("urlToImage")
-    val imageUrl: String,
-
-    @SerializedName("title")
-    val title: String
-
-)
 

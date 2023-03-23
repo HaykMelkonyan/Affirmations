@@ -15,37 +15,26 @@
  */
 package com.example.affirmations
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.affirmations.model.Affirmation
 
 class MainActivity : ComponentActivity() {
     private val dataLoaderViewModel: DataLoaderViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        dataLoaderViewModel.loadData()
+        dataLoaderViewModel.loadAffirmation()
         dataLoaderViewModel.affirmationList.observe(this) { affirmationList ->
             setContent {
                 AffirmationList(affirmationList = affirmationList)
@@ -66,92 +55,82 @@ fun AffirmationList(affirmationList: List<Affirmation>) {
 
 @Composable
 fun AffirmationCard(affirmation: Affirmation) {
-    val context = LocalContext.current
     Column {
-        Button(onClick = {
-            Toast.makeText(context, "button clicked", Toast.LENGTH_SHORT).show()
-        }, Modifier.height(Dp(100f))) {
-
-        }
-        Image(
-            painter = painterResource(affirmation.imageResourceId),
-            contentDescription = stringResource(affirmation.stringResourceId),
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(194.dp)
-                .clickable {
-                    Toast
-                        .makeText(context, "${affirmation.stringResourceId}", Toast.LENGTH_SHORT)
-                        .show()
-                }
-        )
-        Text(
-            text = LocalContext.current.getString(affirmation.stringResourceId),
-            modifier = Modifier
-                .padding(16.dp)
-                .clickable {
-                    Toast
-                        .makeText(context, "${affirmation.stringResourceId}", Toast.LENGTH_SHORT)
-                        .show()
-                },
-            style = MaterialTheme.typography.h6
-        )
+        AsyncImage(
+            model = affirmation.imageUrl,
+            contentDescription = affirmation.text,
+        placeholder = painterResource(id = R.drawable.image1))
+        Text(text = affirmation.text)
     }
-    Row(modifier = Modifier.horizontalScroll(ScrollState(1))) {
-        Image(
-            painter = painterResource(affirmation.imageResourceId),
-            contentDescription = stringResource(affirmation.stringResourceId),
-            modifier = Modifier
-                .height(194.dp)
-                .clickable {
-                    Toast
-                        .makeText(context, "${affirmation.stringResourceId}", Toast.LENGTH_SHORT)
-                        .show()
-                },
-            contentScale = ContentScale.Crop
-        )
-        Text(
-            text = LocalContext.current.getString(affirmation.stringResourceId),
-            modifier = Modifier
-                .padding(16.dp)
-                .clickable {
-                    Toast
-                        .makeText(context, "${affirmation.stringResourceId}", Toast.LENGTH_SHORT)
-                        .show()
-                },
-            style = MaterialTheme.typography.h6
-        )
-        Image(
-            painter = painterResource(affirmation.imageResourceId),
-            contentDescription = stringResource(affirmation.stringResourceId),
-            modifier = Modifier
-                .height(194.dp)
-                .clickable {
-                    Toast
-                        .makeText(context, "${affirmation.stringResourceId}", Toast.LENGTH_SHORT)
-                        .show()
-                },
-            contentScale = ContentScale.Crop
-        )
-        Text(
-            text = LocalContext.current.getString(affirmation.stringResourceId),
-            modifier = Modifier
-                .padding(16.dp)
-                .clickable {
-                    Toast
-                        .makeText(context, "${affirmation.stringResourceId}", Toast.LENGTH_SHORT)
-                        .show()
-                },
-            style = MaterialTheme.typography.h6
-        )
-    }
-
-
 }
 
-@Preview
-@Composable
-private fun AffirmationCardPreview() {
-    AffirmationCard(Affirmation(R.string.affirmation1, R.drawable.image1))
+//@Composable
+//fun AffirmationCard(affirmationResources: Affirmation) {
+//    val context = LocalContext.current
+//    Column {
+//        Button(onClick = {
+//            Toast.makeText(context, "button clicked", Toast.LENGTH_SHORT).show()
+//        }, Modifier.height(Dp(100f))) {
+//
+//        }
+//        Image(
+//            painter = painterResource(affirmationResources.imageResourceId),
+//            contentDescription = affirmationResources.text,
+//            contentScale = ContentScale.Crop,
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height(194.dp)
+//                .clickable {
+//                    showToast(context, affirmationResources)
+//                }
+//        )
+//        Text(
+//            text = affirmationResources.text,
+//            modifier = Modifier
+//                .padding(16.dp)
+//                .clickable {
+//                    showToast(context, affirmationResources)
+//                },
+//            style = MaterialTheme.typography.h6
+//        )
+//    }
+//    Row(modifier = Modifier.horizontalScroll(ScrollState(1))) {
+//        Image(
+//            painter = painterResource(affirmationResources.imageResourceId),
+//            contentDescription = affirmationResources.text,
+//            modifier = Modifier
+//                .height(194.dp)
+//                .clickable {
+//                    showToast(context, affirmationResources)
+//                },
+//            contentScale = ContentScale.Crop
+//        )
+//        Text(
+//            text = affirmationResources.text,
+//            modifier = Modifier
+//                .padding(16.dp)
+//                .clickable {
+//                    showToast(context, affirmationResources)
+//                },
+//            style = MaterialTheme.typography.h6
+//        )
+//    }
+//
+//
+//}
+
+
+private fun showToast(
+    context: Context,
+    affirmation: Affirmation
+) {
+    Toast
+        .makeText(context, "${affirmation.text}", Toast.LENGTH_SHORT)
+        .show()
 }
+
+//@Preview
+//@Composable
+//private fun AffirmationCardPreview() {
+//    AffirmationCard(Affirmation("R.string.affirmation1"))
+//}

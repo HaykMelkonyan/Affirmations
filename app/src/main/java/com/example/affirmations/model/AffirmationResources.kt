@@ -14,12 +14,19 @@
  * limitations under the License.
  */
 package com.example.affirmations.model
+
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+
 /**
- * [Affirmation] is the data class to represent the Affirmation text and imageResourceId
+ * [AffirmationResources] is the data class to represent the Affirmation text and imageResourceId
  */
-data class Affirmation(
+data class AffirmationResources(
     @StringRes val stringResourceId: Int,
     @DrawableRes val imageResourceId: Int
+)
+
+data class Affirmation(
+    val text: String,
+    val imageUrl: String
 )
